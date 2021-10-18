@@ -1,0 +1,141 @@
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this plugin in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/OSL-3.0
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the plugin to
+ * newer versions in the future. If you wish to customize the plugin for
+ * your needs, please document your changes and make backups before you update.
+ *
+ *
+ * @copyright Copyright (c) 2020-2021 GriefMoDz
+ * @license   OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * @link      https://github.com/GriefMoDz/notey
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+/* -- Note Icon -- */
+.notey-noteIcon {
+  display: inline;
+}
+
+.notey-noteIcon {
+  color: var(--channels-default);
+  margin-left: 4px;
+  vertical-align: -.5px;
+}
+
+.peopleListItem-2nzedh .userInfo-2zN2z8 .notey-noteIcon {
+  visibility: hidden;
+}
+
+
+.peopleListItem-2nzedh .userInfo-2zN2z8.hovered-15FzL3 .notey-noteIcon {
+  visibility: visible;
+}
+
+/* -- Markdown Text Area -- */
+.notey-markdown-textarea [class|='placeholder'] {
+  color: #a9a9a9;
+}
+
+.notey-markdown-textarea > div > div {
+  padding-left: 4px;
+  padding-bottom: 10px;
+}
+
+.notey-markdown-textarea > div {
+  max-height: none;
+}
+
+.notey-markdown-textarea:focus-within {
+  background-color: var(--background-tertiary);
+}
+
+.notey-markdown-textarea:not(:focus-within) .codeBlockLang-O_f4hr,
+.notey-markdown-textarea:not(:focus-within) .codeBlockSyntax-2i-tMA,
+.notey-markdown-textarea:not(:focus-within) .syntaxAfter-hcA4AH,
+.notey-markdown-textarea:not(:focus-within) .syntaxBefore-1YQ9lW {
+  display: none;
+}
+
+/* -- Note Browser -- */
+.notey-note-browser-list {
+  padding: 0 16px;
+}
+
+.notey-note-browser-user-card {
+  background-color: var(--background-secondary-alt);
+  border-radius: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 16px;
+}
+
+.notey-note-browser-user-card-header {
+  display: grid;
+  position: relative;
+  align-items: center;
+  grid-template-columns: 32px minmax(20px, auto) 24px;
+  grid-gap: 12px;
+  height: 36px;
+}
+
+.notey-note-browser-user-card-username {
+  white-space: nowrap;
+  color: var(--text-normal);
+  text-overflow: ellipsis;
+  font-weight: 600;
+  overflow: hidden;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.notey-note-browser-user-card-actions {
+  display: flex;
+  justify-self: end;
+}
+
+.notey-note-browser-user-card-body {
+  margin-top: 12px;
+  border-radius: 8px;
+}
+
+.notey-note-browser-user-card-body-inner {
+  position: relative;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: var(--background-tertiary);
+  color: var(--text-normal);
+  font-size: 14px;
+  user-select: text;
+  cursor: text;
+}
+
+.notey-note-browser-user-card-body-inner.notey-markdown-textarea .placeholder-37qJjk {
+  padding: 0;
+}
+
+.notey-note-browser-user-card-body-inner.notey-markdown-textarea .slateTextArea-1Mkdgw {
+  position: initial;
+  min-height: 0 !important;
+  padding: 0;
+}
+
+.notey-note-browser-spinner {
+  margin-bottom: 32px;
+  margin-top: 32px;
+}
+
