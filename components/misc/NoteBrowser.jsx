@@ -37,6 +37,7 @@ const classes = {
 };
 
 const Header = getModuleByDisplayName('Header', false);
+const TabBar = getModuleByDisplayName('TabBar', false);
 const SearchBar = getModuleByDisplayName('SearchBar', false);
 
 const NotesStore = require('../../lib/Store');
@@ -45,6 +46,7 @@ const UserNoteCard = require('./UserNoteCard');
 
 const userStore = getModule([ 'getCurrentUser' ], false);
 const guildStore = getModule([ 'getLastSelectedGuildId' ], false);
+const relationshipStore = getModule([ 'getRelationships' ], false);
 const useSubscribeGuildMembers = getModule([ 'useSubscribeGuildMembers' ], false).default;
 
 const List = getModule([ 'ListNavigatorProvider' ], false);
@@ -88,6 +90,15 @@ function renderHeader (props, states) {
       <div className={classes.divider} />
       {renderSearchBox(states)}
     </React.Fragment>
+    <TabBar
+      className={[ 'notey-note-browser-tab-bar', classes.tabBar ].filter(Boolean).join(' ')}
+      onItemSelect={(selected) => states.setSelectedTab(selected)}
+      selectedItem={states.selectedTab}
+      type={TabBar.Types.TOP_PILL}
+    >
+      <TabBar.Item className={[ classes.tab, states.selectedTab === 'ALL' && classes.active ].filter(Boolean).join(' ')} id='ALL'>{Messages.FRIENDS_SECTION_ALL}</TabBar.Item>
+      <TabBar.Item className={[ classes.tab, states.selectedTab === 'FRIENDS' && classes.active ].filter(Boolean).join(' ')} id='FRIENDS'>{Messages.FRIENDS}</TabBar.Item>
+    </TabBar>
     <Clickable className={classes.closeIcon} onClick={props.onClose} aria-label={Messages.CLOSE}>
       <Icon name='Close' />
     </Clickable>
@@ -95,9 +106,16 @@ function renderHeader (props, states) {
 }
 
 function renderContent (_, states) {
+  const friendIds = relationshipStore.getFriendIDs();
   const truncatedNoteCards = states.noteCards.slice(0, states.lastChunk).filter(noteCard => {
     if (states.query !== '' && noteCard.props.user) {
       if (!noteCard.props.user.tag.toLowerCase().includes(states.query.toLowerCase())) {
+        return false;
+      }
+    }
+
+    if (states.selectedTab === 'FRIENDS') {
+      if (!friendIds.includes(noteCard.props.userId)) {
         return false;
       }
     }
@@ -158,6 +176,7 @@ module.exports = React.memo((props) => {
 
   const [ lastChunk, setLastChunk ] = React.useState(null);
   const [ loading, setLoading ] = React.useState(noteCards.length > 0 && !isInitialized);
+  const [ selectedTab, setSelectedTab ] = React.useState('ALL');
   const [ query, setQuery ] = React.useState('');
 
   const states = {
@@ -166,9 +185,11 @@ module.exports = React.memo((props) => {
     noteCards,
     lastChunk,
     loading,
+    selectedTab,
     query,
     setLastChunk,
     setLoading,
+    setSelectedTab,
     setQuery
   };
 
@@ -185,7 +206,7 @@ module.exports = React.memo((props) => {
   }, []);
 
   return (
-    <div className={[ classes.browser, classes.container ].join(' ')}>
+    <div className={[ 'notey-note-browser', classes.browser, classes.container ].join(' ')}>
       {renderHeader(props, states)}
       {renderContent(props, states)}
     </div>

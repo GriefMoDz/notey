@@ -72,6 +72,10 @@
 }
 
 /* -- Note Browser -- */
+.notey-note-browser {
+  max-width: 420px;
+}
+
 .notey-note-browser-list {
   padding: 0 16px;
 }
@@ -138,4 +142,3 @@
   margin-bottom: 32px;
   margin-top: 32px;
 }
-
