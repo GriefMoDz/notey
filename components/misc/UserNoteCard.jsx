@@ -39,6 +39,7 @@ const Serializer = getModule([ 'serialize', 'deserialize' ], false);
 const ActionButton = getModuleByDisplayName('ActionButton', false);
 
 const SlateTextArea = require('./SlateTextArea');
+const currentUserId = window.DiscordNative.crashReporter.getMetadata().user_id;
 
 function renderHeader (props, states) {
   return (
@@ -46,6 +47,7 @@ function renderHeader (props, states) {
       <Avatar src={states.user?.getAvatarURL() || getDefaultAvatarURL(props.userId)} size='SIZE_32' />
       <div className='notey-note-browser-user-card-username'>
         {states.user?.tag || Messages.UNKNOWN_USER}
+        {props.userId === currentUserId && <div className='notey-note-browser-user-self-tag'>&nbsp;You</div>}
       </div>
       <div className='notey-note-browser-user-card-actions'>
         <ActionButton
@@ -82,7 +84,7 @@ function renderBody (props, states) {
             props.note !== states.textValue && updateNote(states.user.id, states.textValue);
           }}
           onChange={(_, textValue, richValue) => (states.setTextValue(textValue), states.setRichValue(richValue))}
-          placeholder='So... what will it be?'
+          placeholder='Oh, hey! What shall it be?'
           value={states.richValue}
           type='note'
         />

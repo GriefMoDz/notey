@@ -274,14 +274,14 @@ module.exports = class Notey extends Plugin {
     const ConnectedNote = getModuleByDisplayName('ConnectedNote', false);
 
     const Internals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.current;
-    const $useMemo = Internals.useMemo;
-    const $useState = Internals.useState;
-    const $useCallback = Internals.useCallback;
-    const $useContext = Internals.useContext;
-    const $useEffect = Internals.useEffect;
-    const $useLayoutEffect = Internals.useLayoutEffect;
-    const $useRef = Internals.useRef;
-    const $useReducer = Internals.useReducer;
+    const useMemo = Internals.useMemo;
+    const useState = Internals.useState;
+    const useCallback = Internals.useCallback;
+    const useContext = Internals.useContext;
+    const useEffect = Internals.useEffect;
+    const useLayoutEffect = Internals.useLayoutEffect;
+    const useRef = Internals.useRef;
+    const useReducer = Internals.useReducer;
 
     Internals.useMemo = (fn) => fn();
     Internals.useState = (value) => [ value, () => void 0 ];
@@ -294,14 +294,14 @@ module.exports = class Notey extends Plugin {
 
     const Note = new ConnectedNote({ userId: null }).type;
 
-    Internals.useMemo = $useMemo;
-    Internals.useState = $useState;
-    Internals.useCallback = $useCallback;
-    Internals.useContext = $useContext;
-    Internals.useEffect = $useEffect;
-    Internals.useLayoutEffect = $useLayoutEffect;
-    Internals.useRef = $useRef;
-    Internals.useReducer = $useReducer;
+    Internals.useMemo = useMemo;
+    Internals.useState = useState;
+    Internals.useCallback = useCallback;
+    Internals.useContext = useContext;
+    Internals.useEffect = useEffect;
+    Internals.useLayoutEffect = useLayoutEffect;
+    Internals.useRef = useRef;
+    Internals.useReducer = useReducer;
 
     return Note;
   }

@@ -2,6 +2,6 @@
   "NOTEY_NOTES_TOOLTIP": "Notes",
   "NOTEY_NOTE_ICON_TOOLTIP": "You've added a note for **!!{target}!!**",
   "NOTEY_NOTE_BROWSER_EMPTY_STATE_HEADER": "There are no notes to display.",
-  "NOTEY_NOTE_BROWSER_EMPTY_STATE_SUBTEXT": "You can create notes by clicking on a user and filling in the notes section.",
+  "NOTEY_NOTE_BROWSER_EMPTY_STATE_SUBTEXT": "You can create notes by right-clicking on a user and pressing the \"Add Note\" button.",
   "NOTEY_NOTE_BROWSER_EMPTY_STATE_SEARCH_SUBTEXT": "Note: Some users aren't cached meaning they won't display until available."
 }

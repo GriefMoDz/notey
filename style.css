@@ -105,6 +105,22 @@
   overflow: hidden;
   font-size: 16px;
   line-height: 20px;
+  user-select: text;
+  cursor: text;
+}
+
+.notey-note-browser-user-self-tag {
+  display: inline-block;
+  background-color: var(--brand-experiment);
+  border-radius: 3px;
+  padding: 0 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+  margin-left: 4px;
+  font-weight: 500;
+  line-height: 15px;
+  vertical-align: 1px;
+  color: #fff;
 }
 
 .notey-note-browser-user-card-actions {
