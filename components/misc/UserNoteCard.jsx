@@ -26,9 +26,10 @@
  * SOFTWARE.
  */
 
-const { React, FluxDispatcher, getModule, getModuleByDisplayName, i18n: { Messages } } = require('powercord/webpack');
-const { Icon } = require('powercord/components');
+const { React, FluxDispatcher, getModule, getModuleByDisplayName, constants, i18n: { Messages } } = require('powercord/webpack');
+const { Icon, Menu } = require('powercord/components');
 
+const { getId: getCurrentUserId } = getModule([ 'initialize', 'getFingerprint' ], false);
 const { getDefaultAvatarURL } = getModule([ 'getDefaultAvatarURL' ], false);
 const { default: Avatar } = getModule([ 'AnimatedAvatar' ], false);
 const { updateNote } = getModule([ 'updateNote' ], false);
@@ -37,9 +38,9 @@ const { getUser } = getModule([ 'fetchProfile' ], false);
 const List = getModule([ 'ListNavigatorProvider' ], false);
 const Serializer = getModule([ 'serialize', 'deserialize' ], false);
 const ActionButton = getModuleByDisplayName('ActionButton', false);
+const Popout = getModuleByDisplayName('Popout', false);
 
 const SlateTextArea = require('./SlateTextArea');
-const currentUserId = window.DiscordNative.crashReporter.getMetadata().user_id;
 
 function renderHeader (props, states) {
   return (
@@ -47,21 +48,32 @@ function renderHeader (props, states) {
       <Avatar src={states.user?.getAvatarURL() || getDefaultAvatarURL(props.userId)} size='SIZE_32' />
       <div className='notey-note-browser-user-card-username'>
         {states.user?.tag || Messages.UNKNOWN_USER}
-        {props.userId === currentUserId && <div className='notey-note-browser-user-self-tag'>&nbsp;You</div>}
+        {props.userId === getCurrentUserId() && <div className='notey-note-browser-user-self-tag'>&nbsp;You</div>}
       </div>
       <div className='notey-note-browser-user-card-actions'>
         <ActionButton
           onClick={() => states.setEditing(true)}
           shouldHighlight={states.editing}
-          tooltip={Messages.EDIT}
+          tooltip={Messages.EDIT_NOTE}
           icon={(props) => <Icon name='Pencil' {...props} />}
         />
-        <ActionButton
-          onClick={() => updateNote(states.user.id, '')}
-          tooltip={Messages.DELETE}
-          actionType={ActionButton.ActionTypes.DENY}
-          icon={(props) => <Icon name='Close' {...props} />}
-        />
+        <Popout
+          renderPopout={(popoutProps) => <Menu.Menu
+            navId='notey-user-note-card-context-menu'
+            onClose={popoutProps.closePopout}
+            onSelect={void 0}
+            aria-label={Messages.NOTEY_NOTE_ACTIONS_MENU_LABEL}
+          >
+            <Menu.MenuItem id='copy-note' label={Messages.NOTEY_COPY_NOTE} action={() => window.DiscordNative.clipboard.copy(states.textValue)} />
+            <Menu.MenuItem id='remove-note' label={Messages.NOTEY_REMOVE_NOTE} color='colorDanger' action={() => updateNote(props.userId, '')} />
+          </Menu.Menu>}
+        >
+          {(popoutProps) => <ActionButton
+            {...popoutProps}
+            tooltip={Messages.MORE}
+            icon={(props) => <Icon name='OverflowMenu' {...props} />}
+          />}
+        </Popout>
       </div>
     </header>
   );
@@ -73,7 +85,7 @@ function renderBody (props, states) {
       <div className='notey-note-browser-user-card-body-inner notey-markdown-textarea'>
         <SlateTextArea
           rows={6}
-          maxLength={256}
+          maxLength={constants.NOTE_MAX_LENGTH}
           ref={props.editorRef}
           spellcheckEnabled={false}
           disableAutoFocus={true}

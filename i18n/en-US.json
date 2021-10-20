@@ -3,5 +3,10 @@
   "NOTEY_NOTE_ICON_TOOLTIP": "You've added a note for **!!{target}!!**",
   "NOTEY_NOTE_BROWSER_EMPTY_STATE_HEADER": "There are no notes to display.",
   "NOTEY_NOTE_BROWSER_EMPTY_STATE_SUBTEXT": "You can create notes by right-clicking on a user and pressing the \"Add Note\" button.",
-  "NOTEY_NOTE_BROWSER_EMPTY_STATE_SEARCH_SUBTEXT": "Note: Some users aren't cached meaning they won't display until available."
+  "NOTEY_NOTE_BROWSER_EMPTY_STATE_SEARCH_SUBTEXT": "Note: Some users aren't cached meaning they won't display until available. However, if you have a user's ID on hand, you can paste it in the search box to quickly fetch their note.",
+  "NOTEY_NOTE_ACTIONS_MENU_LABEL": "Note Actions",
+  "NOTEY_COPY_NOTE": "Copy Note",
+  "NOTEY_REMOVE_NOTE": "Remove Note",
+  "NOTEY_DELETE_NOTE_MODAL_TITLE": "Delete note for '!!{username}!!'",
+  "NOTEY_DELETE_NOTE_MODAL_BODY": "Are you want to delete this note for '!!{username}!!'? You won't be able to recover it if you do."
 }

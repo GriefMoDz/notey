@@ -73,7 +73,7 @@
 
 /* -- Note Browser -- */
 .notey-note-browser {
-  max-width: 420px;
+  max-width: 490px;
 }
 
 .notey-note-browser-list {
@@ -92,7 +92,7 @@
   display: grid;
   position: relative;
   align-items: center;
-  grid-template-columns: 32px minmax(20px, auto) 24px;
+  grid-template-columns: 32px minmax(20px, auto) 82px;
   grid-gap: 12px;
   height: 36px;
 }
@@ -113,7 +113,7 @@
   display: inline-block;
   background-color: var(--brand-experiment);
   border-radius: 3px;
-  padding: 0 4px;
+  padding: 0 5px;
   font-size: 10px;
   text-transform: uppercase;
   margin-left: 4px;
@@ -135,7 +135,6 @@
 
 .notey-note-browser-user-card-body-inner {
   position: relative;
-  padding: 12px;
   border-radius: 8px;
   background-color: var(--background-tertiary);
   color: var(--text-normal);
@@ -145,13 +144,13 @@
 }
 
 .notey-note-browser-user-card-body-inner.notey-markdown-textarea .placeholder-37qJjk {
-  padding: 0;
+  padding: 12px;
 }
 
 .notey-note-browser-user-card-body-inner.notey-markdown-textarea .slateTextArea-1Mkdgw {
   position: initial;
   min-height: 0 !important;
-  padding: 0;
+  padding: 12px;
 }
 
 .notey-note-browser-spinner {

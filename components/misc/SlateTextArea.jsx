@@ -73,6 +73,10 @@ module.exports = class SlateTextArea extends SlateChannelTextArea {
           oldHandleKeyDown(e, t, r);
         }
       };
+
+      const oldHandleContextMenu = this.handleContextMenu;
+
+      this.handleContextMenu = (e) => !this.props.disabled && oldHandleContextMenu(e);
     }
 
     this.plugins = this.createPlugins();

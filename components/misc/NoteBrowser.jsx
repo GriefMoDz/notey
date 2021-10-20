@@ -53,15 +53,20 @@ const List = getModule([ 'ListNavigatorProvider' ], false);
 const Flux = getModule([ 'useStateFromStores' ], false);
 
 let isInitialized = false;
+let lastSelectedTab;
 
-function loadMore (states) {
-  if (states.lastChunk >= states.noteCards.length) {
+function loadMore (states, reset = false) {
+  if (!reset && states.lastChunk >= states.noteCards.length) {
     return;
+  }
+
+  if (reset === true) {
+    states.setLastChunk(0);
   }
 
   states.setLoading(true);
 
-  setTimeout(() => (states.setLastChunk(states.lastChunk + 10), states.setLoading(false)), 1e3);
+  setTimeout(() => (states.setLastChunk((reset ? 0 : states.lastChunk) + 10), states.setLoading(false)), 1e3);
 }
 
 function maybeLoadMore (states) {
@@ -83,6 +88,8 @@ function renderSearchBox (states) {
 }
 
 function renderHeader (props, states) {
+  const isTabActive = (tab) => states.selectedTab === tab;
+
   return <div className={classes.header}>
     <Icon name='Manifest' className={classes.threadIcon} />
     <Header size={Header.Sizes.SIZE_16} className={classes.title}>{Messages.NOTEY_NOTES_TOOLTIP}</Header>
@@ -96,8 +103,8 @@ function renderHeader (props, states) {
       selectedItem={states.selectedTab}
       type={TabBar.Types.TOP_PILL}
     >
-      <TabBar.Item className={[ classes.tab, states.selectedTab === 'ALL' && classes.active ].filter(Boolean).join(' ')} id='ALL'>{Messages.FRIENDS_SECTION_ALL}</TabBar.Item>
-      <TabBar.Item className={[ classes.tab, states.selectedTab === 'FRIENDS' && classes.active ].filter(Boolean).join(' ')} id='FRIENDS'>{Messages.FRIENDS}</TabBar.Item>
+      <TabBar.Item className={[ classes.tab, isTabActive('ALL') && classes.active ].filter(Boolean).join(' ')} id='ALL'>{Messages.FRIENDS_SECTION_ALL}</TabBar.Item>
+      <TabBar.Item className={[ classes.tab, isTabActive('FRIENDS') && classes.active ].filter(Boolean).join(' ')} id='FRIENDS'>{Messages.FRIENDS}</TabBar.Item>
     </TabBar>
     <Clickable className={classes.closeIcon} onClick={props.onClose} aria-label={Messages.CLOSE}>
       <Icon name='Close' />
@@ -107,23 +114,29 @@ function renderHeader (props, states) {
 
 function renderContent (_, states) {
   const friendIds = relationshipStore.getFriendIDs();
-  const truncatedNoteCards = states.noteCards.slice(0, states.lastChunk).filter(noteCard => {
-    if (states.query !== '' && noteCard.props.user) {
-      if (!noteCard.props.user.tag.toLowerCase().includes(states.query.toLowerCase())) {
-        return false;
-      }
+  const filteredNoteCards = states.noteCards.filter(noteCard => {
+    if (states.selectedTab === 'FRIENDS') {
+      return friendIds.includes(noteCard.key);
     }
 
-    if (states.selectedTab === 'FRIENDS') {
-      if (!friendIds.includes(noteCard.props.userId)) {
-        return false;
-      }
+    return true;
+  }).filter(noteCard => {
+    if (states.query !== '') {
+      return noteCard.props.user.tag.toLowerCase().includes(states.query.toLowerCase());
     }
 
     return true;
   });
 
-  if (!states.loading && truncatedNoteCards.length === 0) {
+  const truncatedNoteCards = filteredNoteCards.slice(0, states.lastChunk);
+
+  let singleUserNoteCard;
+
+  if (states.query !== '' && /\d+/.test(states.query)) {
+    singleUserNoteCard = states.noteCards.find(noteCard => noteCard.key === states.query);
+  }
+
+  if (!singleUserNoteCard && !states.loading && filteredNoteCards.length === 0) {
     return <NoteBrowserEmptyState
       header={Messages.NOTEY_NOTE_BROWSER_EMPTY_STATE_HEADER}
       subtext={Messages[`NOTEY_NOTE_BROWSER_EMPTY_STATE_${states.query !== '' ? 'SEARCH_' : ''}SUBTEXT`]}
@@ -136,9 +149,9 @@ function renderContent (_, states) {
         ref={(e) => states.ref.current = e}
         {...(global._.omit(containerProps, [ 'ref' ]))}
         className='notey-note-browser-list'
-        onScroll={() => truncatedNoteCards.length === states.noteCards.length ? void 0 : maybeLoadMore(states)}
+        onScroll={() => truncatedNoteCards.length === filteredNoteCards.length ? void 0 : maybeLoadMore(states)}
       >
-        {truncatedNoteCards}
+        {singleUserNoteCard || truncatedNoteCards}
         {states.loading ? <Spinner className='notey-note-browser-spinner' /> : null}
       </AdvancedScrollerThin>}
     </List.ListNavigatorContainer>
@@ -174,9 +187,9 @@ module.exports = React.memo((props) => {
   const ref = React.useRef(null);
   const navigator = getAllModules(m => typeof m.default === 'function' && m.default.toString().includes('keyboardModeEnabled'), false)[2].default('notes', ref);
 
-  const [ lastChunk, setLastChunk ] = React.useState(null);
+  const [ lastChunk, setLastChunk ] = React.useState(isInitialized ? 10 : null);
   const [ loading, setLoading ] = React.useState(noteCards.length > 0 && !isInitialized);
-  const [ selectedTab, setSelectedTab ] = React.useState('ALL');
+  const [ selectedTab, setSelectedTab ] = React.useState(lastSelectedTab || 'ALL');
   const [ query, setQuery ] = React.useState('');
 
   const states = {
@@ -194,16 +207,18 @@ module.exports = React.memo((props) => {
   };
 
   React.useEffect(() => {
-    if (noteCards.length > 0) {
-      if (isInitialized) {
-        setLastChunk(10);
-      } else {
-        loadMore(states);
+    if (!isInitialized && noteCards.length > 0) {
+      loadMore(states);
 
-        isInitialized = true;
-      }
+      isInitialized = true;
     }
   }, []);
+
+  React.useEffect(() => {
+    lastSelectedTab !== selectedTab && loadMore(states, true);
+
+    return () => (lastSelectedTab = selectedTab);
+  }, [ selectedTab ]);
 
   return (
     <div className={[ 'notey-note-browser', classes.browser, classes.container ].join(' ')}>
