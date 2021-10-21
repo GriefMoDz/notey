@@ -54,8 +54,11 @@ const Flux = getModule([ 'useStateFromStores' ], false);
 
 let isInitialized = false;
 let lastSelectedTab;
+let timeout;
 
 function loadMore (states, reset = false) {
+  clearTimeout(timeout);
+
   if (!reset && states.lastChunk >= states.noteCards.length) {
     return;
   }
@@ -66,7 +69,7 @@ function loadMore (states, reset = false) {
 
   states.setLoading(true);
 
-  setTimeout(() => (states.setLastChunk((reset ? 0 : states.lastChunk) + 10), states.setLoading(false)), 1e3);
+  timeout = setTimeout(() => (states.setLastChunk((reset ? 0 : states.lastChunk) + 10), states.setLoading(false)), 1e3);
 }
 
 function maybeLoadMore (states) {

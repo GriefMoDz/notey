@@ -33,7 +33,7 @@ const { findInReactTree, getOwnerInstance } = require('powercord/util');
 
 const NoteBrowserIcon = require('./components/icons/NoteBrowser');
 const SlateTextArea = require('./components/misc/SlateTextArea');
-const Settings = require('./components/settings/Settings');
+// const Settings = require('./components/settings/Settings');
 const NoteIcon = require('./components/icons/Note');
 const i18n = require('./i18n');
 
