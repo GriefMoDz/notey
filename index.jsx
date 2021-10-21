@@ -229,7 +229,7 @@ module.exports = class Notey extends Plugin {
   }
 
   patchToolbar () {
-    const HeaderBarContainer = getModuleByDisplayName('HeaderBarContainer', false)
+    const HeaderBarContainer = getModuleByDisplayName('HeaderBarContainer', false);
 
     this.inject('notey-header-bar', HeaderBarContainer.prototype, 'render', (_, res) => {
       const toolbar = res.props.toolbar;
@@ -244,7 +244,7 @@ module.exports = class Notey extends Plugin {
       }
 
       return res;
-    })
+    });
 
     const classes = getModule([ 'title', 'chatContent' ], false);
     const toolbar = document.querySelector(`.${classes.title}`);

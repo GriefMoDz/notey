@@ -125,7 +125,7 @@ function renderContent (_, states) {
     return true;
   }).filter(noteCard => {
     if (states.query !== '') {
-      return noteCard.props.user.tag.toLowerCase().includes(states.query.toLowerCase());
+      return noteCard.props.user && noteCard.props.user.tag.toLowerCase().includes(states.query.toLowerCase());
     }
 
     return true;
