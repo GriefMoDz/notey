@@ -157,3 +157,9 @@
   margin-bottom: 32px;
   margin-top: 32px;
 }
+
+/* Miscellaneous */
+.notey-error-boundary {
+  width: 420px;
+  background-color: var(--background-secondary-alt);
+}

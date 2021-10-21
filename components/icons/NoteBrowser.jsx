@@ -30,6 +30,7 @@ const { React, getModuleByDisplayName, i18n: { Messages } } = require('powercord
 const { HeaderBar, Icon } = require('powercord/components');
 
 const NoteBrowser = require('../misc/NoteBrowser');
+const ErrorBoundary = require('../misc/ErrorBoundary');
 const Popout = getModuleByDisplayName('Popout', false);
 
 module.exports = React.memo(() => {
@@ -46,7 +47,9 @@ module.exports = React.memo(() => {
       autoInvert={false}
       shouldShow={visibility}
       onRequestClose={handleOnClose}
-      renderPopout={() => <NoteBrowser onClose={handleOnClose} />}
+      renderPopout={() => <ErrorBoundary>
+        <NoteBrowser onClose={handleOnClose} />
+      </ErrorBoundary>}
       ignoreModalClicks={true}
     >
       {(popoutProps, selected) => <HeaderBar.Icon
