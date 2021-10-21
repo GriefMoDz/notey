@@ -30,6 +30,7 @@ const { React, FluxDispatcher, getModule, getModuleByDisplayName, constants, i18
 const { Icon, Menu } = require('powercord/components');
 
 const { getId: getCurrentUserId } = getModule([ 'initialize', 'getFingerprint' ], false);
+const { openUserProfileModal } = getModule([ 'openUserProfileModal' ], false);
 const { getDefaultAvatarURL } = getModule([ 'getDefaultAvatarURL' ], false);
 const { default: Avatar } = getModule([ 'AnimatedAvatar' ], false);
 const { updateNote } = getModule([ 'updateNote' ], false);
@@ -45,7 +46,7 @@ const SlateTextArea = require('./SlateTextArea');
 function renderHeader (props, states) {
   return (
     <header className='notey-note-browser-user-card-header'>
-      <Avatar src={states.user?.getAvatarURL() || getDefaultAvatarURL(props.userId)} size='SIZE_32' />
+      <Avatar src={states.user?.getAvatarURL() || getDefaultAvatarURL(props.userId)} size='SIZE_32' onClick={() => openUserProfileModal({ userId: props.userId })} />
       <div className='notey-note-browser-user-card-username'>
         {states.user?.tag || Messages.UNKNOWN_USER}
         {props.userId === getCurrentUserId() && <div className='notey-note-browser-user-self-tag'>&nbsp;You</div>}
@@ -66,6 +67,8 @@ function renderHeader (props, states) {
           >
             <Menu.MenuItem id='copy-note' label={Messages.NOTEY_COPY_NOTE} action={() => window.DiscordNative.clipboard.copy(states.textValue)} />
             <Menu.MenuItem id='remove-note' label={Messages.NOTEY_REMOVE_NOTE} color='colorDanger' action={() => updateNote(props.userId, '')} />
+            <Menu.MenuSeparator />
+            <Menu.MenuItem id='view-profile' label={Messages.VIEW_PROFILE} action={() => openUserProfileModal({ userId: props.userId })} />
           </Menu.Menu>}
         >
           {(popoutProps) => <ActionButton
