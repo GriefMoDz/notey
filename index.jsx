@@ -83,7 +83,7 @@ module.exports = class Notey extends Plugin {
         rows={6}
         maxLength={textAreaProps.maxLength}
         spellcheckEnabled={textAreaProps.autoCorrect}
-        disableAutoFocus={textAreaProps.autoFocus}
+        disableAutoFocus={!textAreaProps.autoFocus}
         className={textAreaProps.className}
         disabled={textAreaProps.disabled}
         onBlur={() => this.props.note !== this.state.textValue && updateNote(this.props.userId, this.state.textValue)}

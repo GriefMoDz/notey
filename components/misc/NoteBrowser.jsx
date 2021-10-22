@@ -38,7 +38,7 @@ const classes = {
 
 const Header = getModule(m => m?.displayName === 'Header' && m?.Sizes, false);
 const TabBar = getModuleByDisplayName('TabBar', false);
-const SearchBar = getModuleByDisplayName('SearchBar', false);
+const SearchBar = getModule(m => m?.displayName === 'SearchBar' && m?.defaultProps.hasOwnProperty('isLoading'), false);
 
 const NotesStore = require('../../lib/Store');
 const NoteBrowserEmptyState = require('./NoteBrowserEmptyState');

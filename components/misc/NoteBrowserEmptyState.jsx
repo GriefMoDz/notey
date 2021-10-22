@@ -29,10 +29,10 @@
 const { React, getModule, getModuleByDisplayName } = require('powercord/webpack');
 const { Icon } = require('powercord/components');
 
-const classes = getModule([ 'header', 'stars' ], false);
+const classes = getModule([ 'header', 'cta' ], false);
 
 const Text = getModuleByDisplayName('Text', false);
-const Header = getModuleByDisplayName('Header', false);
+const Header = getModule(m => m?.displayName === 'Header' && m?.Sizes, false);
 const InboxEmptyStateStars = getModuleByDisplayName('InboxEmptyStateStars', false);
 
 module.exports = (props) => {
