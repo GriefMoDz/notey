@@ -26,7 +26,7 @@
  * SOFTWARE.
  */
 
-const { React, getAllModules, getModule, getModuleByDisplayName, i18n: { Messages } } = require('powercord/webpack');
+const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('powercord/webpack');
 const { Clickable, Icon, Spinner } = require('powercord/components');
 
 const { AdvancedScrollerThin } = getModule([ 'AdvancedScrollerThin' ], false);
@@ -36,7 +36,7 @@ const classes = {
   ...getModule([ 'title', 'searchIcon' ], false)
 };
 
-const Header = getModuleByDisplayName('Header', false);
+const Header = getModule(m => m?.displayName === 'Header' && m?.Sizes, false);
 const TabBar = getModuleByDisplayName('TabBar', false);
 const SearchBar = getModuleByDisplayName('SearchBar', false);
 
@@ -44,12 +44,11 @@ const NotesStore = require('../../lib/Store');
 const NoteBrowserEmptyState = require('./NoteBrowserEmptyState');
 const UserNoteCard = require('./UserNoteCard');
 
-const userStore = getModule([ 'getCurrentUser' ], false);
+const userStore = getModule([ 'getNullableCurrentUser' ], false);
 const guildStore = getModule([ 'getLastSelectedGuildId' ], false);
 const relationshipStore = getModule([ 'getRelationships' ], false);
 const useSubscribeGuildMembers = getModule([ 'useSubscribeGuildMembers' ], false).default;
 
-const List = getModule([ 'ListNavigatorProvider' ], false);
 const Flux = getModule([ 'useStateFromStores' ], false);
 
 let isInitialized = false;
@@ -85,6 +84,7 @@ function renderSearchBox (states) {
   return <SearchBar
     className={classes.searchBox}
     query={states.query}
+    placeholder={Messages.SEARCH}
     onChange={(query) => states.setQuery(query)}
     onClear={() => states.setQuery('')}
   />;
@@ -146,19 +146,14 @@ function renderContent (_, states) {
     />;
   }
 
-  return <List.ListNavigatorProvider navigator={states.navigator}>
-    <List.ListNavigatorContainer>
-      {(containerProps) => <AdvancedScrollerThin
-        ref={(e) => states.ref.current = e}
-        {...(global._.omit(containerProps, [ 'ref' ]))}
-        className='notey-note-browser-list'
-        onScroll={() => truncatedNoteCards.length === filteredNoteCards.length ? void 0 : maybeLoadMore(states)}
-      >
-        {singleUserNoteCard || truncatedNoteCards}
-        {states.loading ? <Spinner className='notey-note-browser-spinner' /> : null}
-      </AdvancedScrollerThin>}
-    </List.ListNavigatorContainer>
-  </List.ListNavigatorProvider>;
+  return <AdvancedScrollerThin
+    ref={states.ref}
+    className='notey-note-browser-list'
+    onScroll={() => truncatedNoteCards.length === filteredNoteCards.length ? void 0 : maybeLoadMore(states)}
+  >
+    {singleUserNoteCard || truncatedNoteCards}
+    {states.loading ? <Spinner className='notey-note-browser-spinner' /> : null}
+  </AdvancedScrollerThin>;
 }
 
 module.exports = React.memo((props) => {
@@ -188,7 +183,6 @@ module.exports = React.memo((props) => {
   }(Object.keys(NotesStore.getNotes()));
 
   const ref = React.useRef(null);
-  const navigator = getAllModules(m => typeof m.default === 'function' && m.default.toString().includes('keyboardModeEnabled'), false)[2].default('notes', ref);
 
   const [ lastChunk, setLastChunk ] = React.useState(isInitialized ? 10 : null);
   const [ loading, setLoading ] = React.useState(noteCards.length > 0 && !isInitialized);

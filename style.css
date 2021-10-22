@@ -47,6 +47,10 @@
 }
 
 /* -- Markdown Text Area -- */
+.notey-markdown-textarea {
+  border-radius: 3px;
+}
+
 .notey-markdown-textarea [class|='placeholder'] {
   color: #a9a9a9;
 }

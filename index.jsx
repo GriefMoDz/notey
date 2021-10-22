@@ -194,7 +194,7 @@ module.exports = class Notey extends Plugin {
 
     DiscordTag.default.displayName = 'DiscordTag';
 
-    const userStore = getModule([ 'getCurrentUser' ], false);
+    const userStore = getModule([ 'getNullableCurrentUser' ], false);
     const NameTag = getModule(m => m.default?.displayName === 'NameTag', false);
     this.inject('notey-name-tag-icon-2', NameTag, 'default', ([ props ], res) => {
       const user = props.user || userStore.findByTag(props.name, props.discriminator);
