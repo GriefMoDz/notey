@@ -112,7 +112,7 @@ module.exports = (props) => {
   const [ user, setUser ] = React.useState(props.user);
   const [ editing, setEditing ] = React.useState(false);
   const [ textValue, setTextValue ] = React.useState(props.note);
-  const [ richValue, setRichValue ] = React.useState(Serializer.deserialize(props.note));
+  const [ richValue, setRichValue ] = React.useState(Serializer.deserialize(props.note || ''));
 
   const handleActionButton = React.useCallback(() => setEditing(!editing), [ editing ]);
   const editorRef = React.useRef(null);
