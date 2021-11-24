@@ -44,7 +44,7 @@ const NotesStore = require('../../lib/Store');
 const NoteBrowserEmptyState = require('./NoteBrowserEmptyState');
 const UserNoteCard = require('./UserNoteCard');
 
-const userStore = getModule([ 'getNullableCurrentUser' ], false);
+const userStore = getModule([ 'initialize', 'getCurrentUser' ], false);
 const guildStore = getModule([ 'getLastSelectedGuildId' ], false);
 const relationshipStore = getModule([ 'getRelationships' ], false);
 const useSubscribeGuildMembers = getModule([ 'useSubscribeGuildMembers' ], false).default;

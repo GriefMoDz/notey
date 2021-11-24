@@ -101,10 +101,10 @@ module.exports = class Notey extends Plugin {
   }
 
   async patchSettingsPage() {
-    const ErrorBoundary = require('../pc-settings/components/ErrorBoundary')
+    const ErrorBoundary = require('../pc-settings/components/ErrorBoundary');
 
-    const FormSection = getModuleByDisplayName('FormSection', false)
-    const SettingsView = await getModuleByDisplayName('SettingsView')
+    const FormSection = getModuleByDisplayName('FormSection', false);
+    const SettingsView = await getModuleByDisplayName('SettingsView');
     this.inject('notey-settings-page', SettingsView.prototype, 'getPredicateSections', (_, sections) => {
       const changelog = sections.find(category => category.section === 'changelog');
       if (changelog) {
@@ -194,7 +194,7 @@ module.exports = class Notey extends Plugin {
 
     DiscordTag.default.displayName = 'DiscordTag';
 
-    const userStore = getModule([ 'getNullableCurrentUser' ], false);
+    const userStore = getModule([ 'initialize', 'getCurrentUser' ], false);
     const NameTag = getModule(m => m.default?.displayName === 'NameTag', false);
     this.inject('notey-name-tag-icon-2', NameTag, 'default', ([ props ], res) => {
       const user = props.user || userStore.findByTag(props.name, props.discriminator);
