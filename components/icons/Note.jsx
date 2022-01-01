@@ -41,7 +41,8 @@ function renderNoteIcon ({ props, isSelf }) {
 
   // eslint-disable-next-line multiline-ternary
   return props.getSetting(`noteIcon-${locationKey}`, true) ? <Tooltip
-    text={Messages.NOTEY_NOTE_ICON_TOOLTIP.format({ target: isSelf ? 'yourself' : 'this user' })}
+    text={props.hasNote} // Instead display the Note
+    //text={Messages.NOTEY_NOTE_ICON_TOOLTIP.format({ target: isSelf ? 'yourself' : 'this user' })}
     hideOnClick={false}
   >
     {(props) => <div className='notey-noteIcon' {...props}>
