@@ -26,22 +26,37 @@
  * SOFTWARE.
  */
 
-const { React, getModule, getModuleByDisplayName, i18n: { Messages } } = require('powercord/webpack');
+const { React, getModule, getModuleByDisplayName } = require('powercord/webpack');
 const { Icon } = require('powercord/components');
 
 const Tooltip = getModuleByDisplayName('Tooltip', false);
+
 const classes = getModule([ 'member', 'ownerIcon' ], false);
+const parser = getModule([ 'parseTopic' ], false);
 
 const { getId: getCurrentUserId } = getModule([ 'initialize', 'getFingerprint' ], false);
 
 const Lodash = window._;
 
-function renderNoteIcon ({ props, isSelf }) {
+function getCustomRules () {
+  const { defaultRules } = parser;
+  const linkRule = getModule(m => typeof m === 'function' && m.toString().includes('enableBuildOverrides'), false);
+
+  const customRules = {
+    ...defaultRules,
+    link: linkRule({ enableBuildOverrides: false })
+  };
+
+  return customRules;
+}
+
+function renderNoteIcon ({ props }) {
   const locationKey = Lodash.upperFirst(Lodash.camelCase(props.location));
+  const parseNoteReact = parser.reactParserFor(getCustomRules());
 
   // eslint-disable-next-line multiline-ternary
   return props.getSetting(`noteIcon-${locationKey}`, true) ? <Tooltip
-    text={Messages.NOTEY_NOTE_ICON_TOOLTIP.format({ target: isSelf ? 'yourself' : 'this user' })}
+    text={parseNoteReact(props.note)}
     hideOnClick={false}
   >
     {(props) => <div className='notey-noteIcon' {...props}>
@@ -51,7 +66,7 @@ function renderNoteIcon ({ props, isSelf }) {
 }
 
 module.exports = React.memo(props => {
-  if (!props.hasNote) {
+  if (!props.note) {
     return null;
   }
 
@@ -68,5 +83,5 @@ module.exports = React.memo(props => {
     return null;
   }
 
-  return renderNoteIcon({ props, isSelf });
+  return renderNoteIcon({ props });
 });
