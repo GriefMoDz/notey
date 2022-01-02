@@ -128,7 +128,7 @@ module.exports = class Notey extends Plugin {
 
   populateNoteIcon () {
     const ConnectedNoteIcon = Flux.connectStores([ NotesStore, powercord.api.settings.store ], (props) => ({
-      hasNote: props.user?.id ? NotesStore.getNotes()[props.user.id] : false,
+      note: props.user?.id ? NotesStore.getNotes()[props.user.id] : false,
       ...powercord.api.settings._fluxProps('notey')
     }))(NoteIcon);
 
