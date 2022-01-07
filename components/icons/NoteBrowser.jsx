@@ -52,14 +52,14 @@ module.exports = React.memo(() => {
       </ErrorBoundary>}
       ignoreModalClicks={true}
     >
-      {(popoutProps, selected) => <HeaderBar.Icon
+      {(popoutProps, { isShown: selected }) => <HeaderBar.Icon
         {...popoutProps}
         icon={(props) => <Icon name='Manifest' {...props} />}
         onClick={handleOnClick}
         aria-label={Messages.NOTEY_NOTES_TOOLTIP}
         tooltip={selected ? null : Messages.NOTEY_NOTES_TOOLTIP}
         selected={selected}
-      />} 
+      />}
     </Popout>
   );
 });
