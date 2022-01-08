@@ -37,12 +37,12 @@
   vertical-align: -.5px;
 }
 
-.peopleListItem-2nzedh .userInfo-2zN2z8 .notey-noteIcon {
+.peopleListItem-u6dGxF .userInfo-2WpsYG .notey-noteIcon {
   visibility: hidden;
 }
 
 
-.peopleListItem-2nzedh .userInfo-2zN2z8.hovered-15FzL3 .notey-noteIcon {
+.peopleListItem-u6dGxF .userInfo-2WpsYG.hovered-1EO01j .notey-noteIcon {
   visibility: visible;
 }
 
@@ -68,10 +68,10 @@
   background-color: var(--background-tertiary);
 }
 
-.notey-markdown-textarea:not(:focus-within) .codeBlockLang-O_f4hr,
-.notey-markdown-textarea:not(:focus-within) .codeBlockSyntax-2i-tMA,
-.notey-markdown-textarea:not(:focus-within) .syntaxAfter-hcA4AH,
-.notey-markdown-textarea:not(:focus-within) .syntaxBefore-1YQ9lW {
+.notey-markdown-textarea:not(:focus-within) .codeBlockLang-3OMn-4,
+.notey-markdown-textarea:not(:focus-within) .codeBlockSyntax-2MZ-Qy,
+.notey-markdown-textarea:not(:focus-within) .syntaxAfter-OxiKEl,
+.notey-markdown-textarea:not(:focus-within) .syntaxBefore-3pDAmR {
   display: none;
 }
 
@@ -147,11 +147,11 @@
   cursor: text;
 }
 
-.notey-note-browser-user-card-body-inner.notey-markdown-textarea .placeholder-37qJjk {
+.notey-note-browser-user-card-body-inner.notey-markdown-textarea .placeholder-1_mJY1 {
   padding: 12px;
 }
 
-.notey-note-browser-user-card-body-inner.notey-markdown-textarea .slateTextArea-1Mkdgw {
+.notey-note-browser-user-card-body-inner.notey-markdown-textarea .slateTextArea-27tjG0 {
   position: initial;
   min-height: 0 !important;
   padding: 12px;
