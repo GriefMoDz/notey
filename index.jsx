@@ -217,12 +217,20 @@ module.exports = class Notey extends Plugin {
 
       const { user } = this.props;
       const defaultProps = { user, location: 'direct-messages' };
-      const decorators = Array.isArray(res.props.decorators) ? res.props.decorators : [ res.props.decorators ];
 
-      res.props.decorators = [
-        ...decorators,
-        <ConnectedNoteIcon {...defaultProps} />
-      ];
+      if (typeof res.props.children === 'function') {
+        res.props.children = (oldMethod => (props) => {
+          const res = oldMethod(props);
+          const decorators = Array.isArray(res.props.decorators) ? res.props.decorators : [ res.props.decorators ];
+
+          res.props.decorators = [
+            ...decorators,
+            <ConnectedNoteIcon {...defaultProps} />
+          ];
+
+          return res;
+        })(res.props.children);
+      }
 
       return res;
     });
