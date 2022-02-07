@@ -244,7 +244,7 @@ module.exports = class Notey extends Plugin {
 
       if (toolbar) {
         const children = toolbar.props.children;
-        const index = children?.findIndex(i => i?.type?.displayName === 'RecentsButton');
+        const index = children?.findIndex(i => i?.type?.displayName?.includes('UpdateButton'));
 
         if (index > -1) {
           children.splice(index, 0, <NoteBrowserIcon />);
