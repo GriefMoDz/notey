@@ -27,7 +27,7 @@
  */
 
 const { React, FluxDispatcher, getModule, getModuleByDisplayName, constants, i18n: { Messages } } = require('powercord/webpack');
-const { Icon, Menu } = require('powercord/components');
+const { Menu } = require('powercord/components');
 
 const { getId: getCurrentUserId } = getModule([ 'initialize', 'getFingerprint' ], false);
 const { openUserProfileModal } = getModule([ 'openUserProfileModal' ], false);
@@ -41,7 +41,10 @@ const Serializer = getModule([ 'serialize', 'deserialize' ], false);
 const ActionButton = getModuleByDisplayName('ActionButton', false);
 const Popout = getModuleByDisplayName('Popout', false);
 
+const OverflowMenuIcon = require('../icons/OverflowMenu');
 const SlateTextArea = require('./SlateTextArea');
+const ErrorBoundary = require('./ErrorBoundary');
+const PencilIcon = require('../icons/Pencil');
 
 function renderHeader (props, states) {
   return (
@@ -56,7 +59,7 @@ function renderHeader (props, states) {
           onClick={() => states.setEditing(true)}
           shouldHighlight={states.editing}
           tooltip={Messages.EDIT_NOTE}
-          icon={(props) => <Icon name='Pencil' {...props} />}
+          icon={(props) => <PencilIcon {...props} />}
         />
         <Popout
           renderPopout={(popoutProps) => <Menu.Menu
@@ -74,7 +77,7 @@ function renderHeader (props, states) {
           {(popoutProps) => <ActionButton
             {...popoutProps}
             tooltip={Messages.MORE}
-            icon={(props) => <Icon name='OverflowMenu' {...props} />}
+            icon={(props) => <OverflowMenuIcon {...props} />}
           />}
         </Popout>
       </div>
@@ -147,11 +150,13 @@ module.exports = (props) => {
   };
 
   return (
-    <List.ListNavigatorItem id={props.userId}>
-      {(listItemProps) => <div className='notey-note-browser-user-card' {...listItemProps}>
-        {renderHeader({ ...props, handleActionButton }, states)}
-        {renderBody({ ...props, editorRef }, states)}
-      </div>}
-    </List.ListNavigatorItem>
+    <ErrorBoundary>
+      <List.ListNavigatorItem id={props.userId}>
+        {(listItemProps) => <div className='notey-note-browser-user-card' {...listItemProps}>
+          {renderHeader({ ...props, handleActionButton }, states)}
+          {renderBody({ ...props, editorRef }, states)}
+        </div>}
+      </List.ListNavigatorItem>
+    </ErrorBoundary>
   );
 };

@@ -27,10 +27,12 @@
  */
 
 const { React, getModuleByDisplayName, i18n: { Messages } } = require('powercord/webpack');
-const { HeaderBar, Icon } = require('powercord/components');
+const { HeaderBar } = require('powercord/components');
 
 const NoteBrowser = require('../misc/NoteBrowser');
 const ErrorBoundary = require('../misc/ErrorBoundary');
+const ManifestIcon = require('./Manifest');
+
 const Popout = getModuleByDisplayName('Popout', false);
 
 module.exports = React.memo(() => {
@@ -40,26 +42,26 @@ module.exports = React.memo(() => {
   const handleOnClick = React.useCallback(() => setVisibility(!visibility), [ visibility ]);
 
   return (
-    <Popout
-      animation={Popout.Animation.NONE}
-      position={Popout.Positions.BOTTOM}
-      align={Popout.Align.RIGHT}
-      autoInvert={false}
-      shouldShow={visibility}
-      onRequestClose={handleOnClose}
-      renderPopout={() => <ErrorBoundary>
-        <NoteBrowser onClose={handleOnClose} />
-      </ErrorBoundary>}
-      ignoreModalClicks={true}
-    >
-      {(popoutProps, { isShown: selected }) => <HeaderBar.Icon
-        {...popoutProps}
-        icon={(props) => <Icon name='Manifest' {...props} />}
-        onClick={handleOnClick}
-        aria-label={Messages.NOTEY_NOTES_TOOLTIP}
-        tooltip={selected ? null : Messages.NOTEY_NOTES_TOOLTIP}
-        selected={selected}
-      />}
-    </Popout>
+    <ErrorBoundary>
+      <Popout
+        animation={Popout.Animation.NONE}
+        position={Popout.Positions.BOTTOM}
+        align={Popout.Align.RIGHT}
+        autoInvert={false}
+        shouldShow={visibility}
+        onRequestClose={handleOnClose}
+        renderPopout={() => <NoteBrowser onClose={handleOnClose} />}
+        ignoreModalClicks={true}
+      >
+        {(popoutProps, { isShown: selected }) => <HeaderBar.Icon
+          {...popoutProps}
+          icon={(props) => <ManifestIcon {...props} />}
+          onClick={handleOnClick}
+          aria-label={Messages.NOTEY_NOTES_TOOLTIP}
+          tooltip={selected ? null : Messages.NOTEY_NOTES_TOOLTIP}
+          selected={selected}
+        />}
+      </Popout>
+    </ErrorBoundary>
   );
 });

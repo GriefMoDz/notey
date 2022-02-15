@@ -27,9 +27,10 @@
  */
 
 const { React, getModule, getModuleByDisplayName } = require('powercord/webpack');
-const { Icon } = require('powercord/components');
 
 const Tooltip = getModuleByDisplayName('Tooltip', false);
+const ErrorBoundary = require('../misc/ErrorBoundary');
+const ManifestIcon = require('../icons/Manifest');
 
 const classes = getModule([ 'member', 'ownerIcon' ], false);
 const parser = getModule([ 'parseTopic' ], false);
@@ -60,7 +61,7 @@ function renderNoteIcon ({ props }) {
     hideOnClick={false}
   >
     {(props) => <div className='notey-noteIcon' {...props}>
-      <Icon name='Manifest' className={classes.icon} {...props} />
+      <ManifestIcon className={classes.icon} {...props} />
     </div>}
   </Tooltip> : null;
 }
@@ -83,5 +84,9 @@ module.exports = React.memo(props => {
     return null;
   }
 
-  return renderNoteIcon({ props });
+  return (
+    <ErrorBoundary>
+      {renderNoteIcon({ props })}
+    </ErrorBoundary>
+  );
 });

@@ -42,6 +42,8 @@ const SearchBar = getModule(m => m?.displayName === 'SearchBar' && m?.defaultPro
 
 const NotesStore = require('../../lib/Store');
 const NoteBrowserEmptyState = require('./NoteBrowserEmptyState');
+const ManifestIcon = require('../icons/Manifest');
+const ErrorBoundary = require('./ErrorBoundary');
 const UserNoteCard = require('./UserNoteCard');
 
 const userStore = getModule([ 'initialize', 'getCurrentUser' ], false);
@@ -94,7 +96,7 @@ function renderHeader (props, states) {
   const isTabActive = (tab) => states.selectedTab === tab;
 
   return <div className={classes.header}>
-    <Icon name='Manifest' className={classes.threadIcon} />
+    <ManifestIcon className={classes.threadIcon} />
     <Header size={Header.Sizes.SIZE_16} className={classes.title}>{Messages.NOTEY_NOTES_TOOLTIP}</Header>
     <React.Fragment>
       <div className={classes.divider} />
@@ -218,9 +220,11 @@ module.exports = React.memo((props) => {
   }, [ selectedTab ]);
 
   return (
-    <div className={[ 'notey-note-browser', classes.browser, classes.container ].join(' ')}>
-      {renderHeader(props, states)}
-      {renderContent(props, states)}
-    </div>
+    <ErrorBoundary>
+      <div className={[ 'notey-note-browser', classes.browser, classes.container ].join(' ')}>
+        {renderHeader(props, states)}
+        {renderContent(props, states)}
+      </div>
+    </ErrorBoundary>
   );
 });
