@@ -140,7 +140,7 @@ module.exports = class Notey extends Plugin {
     const MessageHeader = getModule(m => getDefaultMethodByKeyword(m, 'showTimestampOnHover'), false);
     this.inject('notey-message-header-icon-1', MessageHeader, 'default', ([ { message: { author: user } } ], res) => {
       const defaultProps = { user, location: 'message-headers' };
-      const usernameHeader = findInReactTree(res, n => Array.isArray(n?.props?.children) && n.props.children.find(c => c?.props?.message));
+      const usernameHeader = findInReactTree(res.props?.username, n => Array.isArray(n?.props?.children) && n.props.children.find(c => c?.props?.message));
 
       if (usernameHeader?.props?.children && usernameHeader?.props?.children[0] && usernameHeader?.props?.children[0].props) {
         usernameHeader.props.children[0].props.__noteyDefaultProps = defaultProps;
